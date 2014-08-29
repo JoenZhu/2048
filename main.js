@@ -1,61 +1,85 @@
-var data = [] , // game data here
-    score = 0 , // game score here
-    
-    $mainContent ; // game main body here
-    
+var data = [] , // game data , this will be init as a [][] later
+    score = 0 , // game score
+
+    $mainContent ; // using jQuery choose game main body
+
 $(document).ready(function(){
     $mainContent = $('#mainContent') ;
-    newGame() ; // create a new game 
-}) ;
+    newGame() ;
+});
 
-// create a new game
 function newGame(){
-    initGrid() ; // this will init the main body grid cell 
+    // init grids position
+    initGrid() ;
+
+    // init random num and grid
+    initRandomNum() ;
+    initRandomNum() ;
 }
 
 function initGrid(){
-    var i, j,
-        $gridCell;  // each grid cell 
-    
-    // loop to position each grod cell
-    for(i = 0; i < 4; i++){
+    var i, j, $numGrid ;
+
+    // init grid position 
+    for (i = 0; i < 4; i++) {
         for(j = 0; j < 4; j ++){
-            $gridCell = $('#gridCell' + i + '' + j) ;
-            $gridCell.css('left', setLeft() + 'px') ;
-            $gridCell.css('top', setTop() + 'px') ;
+            $('#gridCell'+i+''+j).css('left', getPosY(i,j)+'px').css('top', getPosX(i,j)+'px') ;
         }
-    }
-    
-    // init data as a matrix 
+    };
+
+    // init number grid 
     for(i = 0; i < 4; i++){
         data[i] = [] ;
         for(j = 0; j < 4; j++){
-            // init each data as 0 
-            data[i][j] = 0;
+            data[i][j] = 0 ;
         }
     }
-    
-    updateNumView()  ;
+
+    updateDataView() ;
 }
 
-// add num grid cell to each grid cell 
-function updateNumView(){
-    var i, j, 
-        $numGridCell ; // new create num grid cell coverd grid cell
-        
-    $('.num-grid-cell').remove() ;
-    
-    if(!isNoSpace()){
-        for(i = 0; i < 4; i++){
-            for(j = 0; j < 4; j++){
-                $numGridCell = $('<div class="num-grid-cell" id="numGridCell' + i + '' + j +'"></div>') ;
-                $numGridCell.css('left', setLeft() + 'px') ;
-                $numGridCell.css('top', setTop() + 'px') ;
-                $numGridCell.text(data[i][j]) ;
+
+function updateDataView(){
+    var i, j ; 
+    $('.num-grid-cell').remove() ; 
+    for(i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            $numGrid = $('<div class="num-grid-cell" id="numGridCell'+i+''+j+'"></div>');
+            $numGrid.css('left', getPosY(i,j)+'px').css('top', getPosX(i,j)+'px') ;
+
+            if(data[i][j] == 0){
+                $numGrid.css('backgroundColor','transparent') ;
+            }else{
+                $numGrid.css('backgroundColor', setBgColor(data[i][j])) ;
+                $numGrid.css('color', setNumColor(data[i][j])) ;
+                $numGrid.text(data[i][j]) ; 
             }
+
+            $mainContent.append($numGrid) ;
         }
-        
-    }else{
-        
     }
+}
+
+function initRandomNum () {
+    var random = Math.random , 
+        x , y , num;
+    if(!isNoSpace(data)){
+        // init random position 
+        x = parseInt(Math.floor(random() * 4)) ;
+        y = parseInt(Math.floor(random() * 4)) ;
+
+        while ( true ) {
+            if(data[x][y] == 0 )
+                break  ; 
+            x = parseInt(Math.floor(random() * 4)) ;
+            y = parseInt(Math.floor(random() * 4)) ;
+        }
+
+        // init random num 
+        num = random() > 0.5 ? 2 : 4 ;
+        data[x][y] = num ;
+        console.log(x+', '+y+', '+num) ;
+        showNums(x, y, num);
+    }
+    
 }
