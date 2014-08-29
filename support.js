@@ -1,11 +1,14 @@
-function getPosX(i, j){
+// set the top position of grid cell or num grid cell 
+function setTop(i, j){
   return 20 + i * 120 ;
 }
 
-function getPosY(i, j){
+// set the left position of grid cell or num grid cell
+function setLeft(i, j){
   return 20 + j * 120 ;
 }
 
+// set the background color base on data value 
 function setBgColor(num){
   switch(Math.log(num) / Math.log(2)){
     case 1 : return '#fbcdaa' ;
@@ -25,10 +28,12 @@ function setBgColor(num){
   }
 }
 
+// set the number color base on data value 
 function setNumColor(num){
   return num <= 4 ? '#e6ff9a' : '#fff' ;
 }
 
+// check if there is a space for a random num grid cell
 function isNoSpace(data){
   var i , j ;  
   for(i = 0; i < 4; i++){
@@ -38,5 +43,31 @@ function isNoSpace(data){
     }
   }
 
+  return true ;
+}
+
+// check if num grid cell can move to left 
+// data : the game date 
+function canMoveLeft( data ){
+  var i, j ; 
+  for(i = 0; i < 4; i++ )
+    for(j = 1; j < 4; j++ )
+      if(data[i][j] != 0)
+        if(data[i][j - 1] == 0 || data[i][j - 1] == data[i][j])
+          return true ; 
+
+  return false ;
+}
+
+// check if there is a block between two num grid cells 
+// row : data row number 
+// start : start col 
+// end : end col 
+// data : game number data
+function isNoBlock(row, start, end, data){
+  start += 1;
+  for(; start < end; start++ )
+    if(data[row][start] != 0) 
+      return false ;
   return true ;
 }

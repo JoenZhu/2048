@@ -1,6 +1,6 @@
 *,*:before,*:after{
   box-sizing:border-box;
-  -webkie-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
   -moz-box-sizing:border-box;
 }
 
@@ -17,6 +17,7 @@ header{
 
 header h3{
   font-size: 45px;
+  margin: 10px auto ;
 }
 
 header a{
@@ -25,6 +26,10 @@ header a{
   background-color: #90b88b;
   text-decoration: none;
   border-radius: 10px;
+}
+
+header a:hover{
+  background-color: #90b66c;
 }
 
 .main-content{

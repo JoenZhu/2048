@@ -23,7 +23,7 @@ function initGrid(){
     // init grid position 
     for (i = 0; i < 4; i++) {
         for(j = 0; j < 4; j ++){
-            $('#gridCell'+i+''+j).css('left', getPosY(i,j)+'px').css('top', getPosX(i,j)+'px') ;
+            $('#gridCell'+i+''+j).css('left', setLeft(i,j)+'px').css('top', setTop(i,j)+'px') ;
         }
     };
 
@@ -45,7 +45,7 @@ function updateDataView(){
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
             $numGrid = $('<div class="num-grid-cell" id="numGridCell'+i+''+j+'"></div>');
-            $numGrid.css('left', getPosY(i,j)+'px').css('top', getPosX(i,j)+'px') ;
+            $numGrid.css('left', setLeft(i,j)+'px').css('top', setTop(i,j)+'px') ;
 
             if(data[i][j] == 0){
                 $numGrid.css('backgroundColor','transparent') ;
@@ -82,4 +82,73 @@ function initRandomNum () {
         showNums(x, y, num);
     }
     
+}
+
+
+// add keydown event listener to document 
+$(document).on('keydown', function(event){
+    switch(event.keyCode){
+        case 37 : // left arrow 
+            if(moveLeft()){  
+                initRandomNum() ;
+                isGameOver() ;
+            } 
+            break ; 
+        case 38 : // up arrow
+            moveUp() ;
+            break ;
+        case 39 : // right arrow
+            moveRight() ;
+            break ;
+        case 40 : // down arrow
+            moveDown() ;
+            break ;
+        default : // any other key  
+            break ;
+    }
+});
+
+function isGameOver(){
+
+}
+
+// press left arrow key and execute this method
+// if can move left, then move left and return true  
+// if cannot move left , then break and return false 
+function moveLeft () {
+    var i, j, k; 
+    if(canMoveLeft(data)) {
+        for(i = 0; i < 4; i++ )
+            for(j = 1; j < 4; j++ ){
+                if(data[i][j] != 0){
+                    for(k = 0; k < j; k++ ){
+                        if(data[i][k] == 0 || !isNoBlock(i, k, j, data)){
+
+                            // move num cell form (i,j) to (i,k)
+                            showMove(i, j, i, k) 
+
+                            // set (i,j) as (i,j)
+                            data[i][k] = data[i][j] ;
+                            data[i][j] = 0 ;
+
+                            continue ;
+                        }else if(data[i][k] == data[i][j] || !isNoBlock(i, k, j, data)){
+
+                            // move
+                            showMove(i, j, i, k) 
+
+                            data[i][k] += data[i][j] ;
+                            data[i][j] = 0 ;
+
+                            continue ;
+                        }
+                    }
+                }
+            }
+
+        setTimeout(updateDataView, 200) ;
+        return true ;
+    }
+
+    return false ; 
 }
