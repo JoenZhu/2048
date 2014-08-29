@@ -1,4 +1,44 @@
-body{background-color:#fba;}
-header{width:500px;text-align:center;}
-header a{text-decration:none;padding:10px;background-color:#abf;font-size:54px;}
-header a:hover{background-color:#abe;color:#fafafa;}
+*,*:before,*:after{
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+}
+
+body{
+  background-color:#fba;
+}
+
+header{
+  width:500px;
+  text-align:center;
+  margin:10px auto;
+}
+
+header a{
+  text-decration:none;
+  padding:10px;
+  background-color:#abf;
+  font-size:54px;
+}
+
+header a:hover{
+  background-color:#abe;
+  color:#fafafa;
+}
+
+.main-content{
+  width:500px;
+  height:500px;
+  margin:0 auto;
+  background-color:#ffa;
+  border-radius:10px;
+  padding:20px;
+}
+
+.grid-cell{
+  width:100px;
+  height:100px;
+  background-color:transparent;
+  border-radius:10px;
+  position:absolute;
+}
