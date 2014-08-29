@@ -1,1 +1,4 @@
 body{background-color:#fba;}
+header{width:500px;text-align:center;}
+header a{text-decration:none;padding:10px;background-color:#abf;font-size:54px;}
+header a:hover{background-color:#abe;color:#fafafa;}
