@@ -1,10 +1,13 @@
 var data = [] , // game data , this will be init as a [][] later
-    score = 0 , // game score
+    score , // game score
+    isAdded = [],
 
-    $mainContent ; // using jQuery choose game main body
+    $mainContent ,
+    $scoreSp ; // using jQuery choose game main body
 
 $(document).ready(function(){
     $mainContent = $('#mainContent') ;
+    $scoreSp = $('#scoreSp');
     newGame() ;
 });
 
@@ -30,11 +33,15 @@ function initGrid(){
     // init number grid 
     for(i = 0; i < 4; i++){
         data[i] = [] ;
+        isAdded[i] = [] ;
         for(j = 0; j < 4; j++){
             data[i][j] = 0 ;
+            isAdded[i][j] = false ;
         }
     }
 
+    score = 0;
+    $scoreSp.text(score) ;
     updateDataView() ;
 }
 
@@ -52,12 +59,18 @@ function updateDataView(){
             }else{
                 $numGrid.css('backgroundColor', setBgColor(data[i][j])) ;
                 $numGrid.css('color', setNumColor(data[i][j])) ;
+                if( (data[i][j] + '').toString().length > 2){
+                    $numGrid.css('fontSize', setFontSize( data[i][j] )) ;
+                }
                 $numGrid.text(data[i][j]) ; 
             }
 
+            isAdded[i][j] = false ;
             $mainContent.append($numGrid) ;
         }
     }
+
+    $scoreSp.text(score);
 }
 
 function initRandomNum () {
@@ -88,7 +101,7 @@ $(document).on('keydown', function(event){
     switch(event.keyCode){
         case 37 : // left arrow 
             if ( moveLeft() ) {  
-                initRandomNum() ;
+                setTimeout(initRandomNum, 210) ;
                 isGameOver() ;
             } 
             break ; 
@@ -115,8 +128,15 @@ $(document).on('keydown', function(event){
     }
 });
 
+// check if game is over 
 function isGameOver(){
+    if( isNoSpace( data ) && !isNoMove( data ))
+        gameOver() ;
+}
 
+// game over
+function gameOver(){
+    alert('Game over') ;
 }
 
 // press left arrow key and execute this method
@@ -139,7 +159,7 @@ function moveLeft () {
                             data[i][j] = 0 ;
 
                             continue ;
-                        }else if(data[i][k] == data[i][j] && isNoBlock(i, k, j, data)){
+                        }else if(data[i][k] == data[i][j] && isNoBlock(i, k, j, data) && !isAdded[i][k]){
 
                             // move
                             showMove(i, j, i, k) 
@@ -147,6 +167,8 @@ function moveLeft () {
                             data[i][k] += data[i][j] ;
                             data[i][j] = 0 ;
 
+                            score += data[i][k]
+                            isAdded[i][k] = true ;
                             continue ;
                         }
                     }
@@ -176,10 +198,12 @@ function moveUp () {
                             data[i][j] = 0 ;
 
                             continue ;
-                        } else if (data[k][j] == data[i][j] && isNoBlockUp(j, k, i, data)){
+                        } else if (data[k][j] == data[i][j] && isNoBlockUp(j, k, i, data) && !isAdded[k][j]){
                             showMove(i, j, k, j) ;
                             data[k][j] += data[i][j]
                             data[i][j] = 0 ;
+                            score += data[k][i];
+                            isAdded[k][i] = true ;
 
                             continue ; 
                         }
@@ -204,17 +228,19 @@ function moveRight() {
         for( i = 0; i < 4; i++ ){
             for( j = 2; j >= 0; j-- ){
                 if( data[i][j] != 0 ){
-                    for( k = 3; k >= j; k-- ){
+                    for( k = 3; k > j; k-- ){
                         if( data[i][k] == 0 && isNoBlock(i, j, k, data)){
                             showMove(i, j, i, k) ;
                             data[i][k] = data[i][j] ;
                             data[i][j] = 0 ; 
 
                             continue ; 
-                        } else if ( data[i][k] == data[i][j] && isNoBlock(i, j, k, data)){
+                        } else if ( data[i][k] == data[i][j] && isNoBlock(i, j, k, data) && !isAdded[i][k]){
                             showMove(i, j, i, k) ;
                             data[i][k] += data[i][j] ;
                             data[i][j] = 0 ; 
+                            score += data[i][k] ;
+                            isAdded[i][k] = true ;
 
                             continue ; 
                         }
@@ -237,17 +263,19 @@ function moveDown () {
         for( j = 0; j < 4; j++ ){
             for( i = 2; i >= 0; i-- ){
                 if( data[i][j] != 0 ){
-                    for( k = 3; k >= i; k-- ){
+                    for( k = 3; k > i; k-- ){
                         if( data[k][j] == 0 && isNoBlockUp(j, i, k, data)){
                             showMove(i, j, k, j);
                             data[k][j] = data[i][j] ;
                             data[i][j] = 0 ;
 
                             continue ;
-                        } else if( data[k][j] == data[i][j] && isNoBlockUp(j, i, k, data)){
+                        } else if( data[k][j] == data[i][j] && isNoBlockUp(j, i, k, data) && !isAdded[k][j]){
                             showMove(i, j, k, j);
                             data[k][j] += data[i][j] ;
                             data[i][j] = 0 ;
+                            score += data[k][j];
+                            isAdded[k][j] = true ;
 
                             continue ;
                         }

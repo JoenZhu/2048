@@ -28,6 +28,16 @@ function setBgColor(num){
   }
 }
 
+// set number cell fontsize
+function setFontSize( num ){
+  num += '' ;
+  switch( num.length ){
+    case 3 : return '54px' ;
+    case 4 : return '40px' ;
+    case 5 : return '30px' ;
+  }
+}
+
 // set the number color base on data value 
 function setNumColor(num){
   return num <= 4 ? '#e6ff9a' : '#fff' ;
@@ -125,3 +135,6 @@ function isNoBlockUp( col, start, end, data){
   return true ;
 }
 
+function isNoMove( data ){
+  return canMoveLeft( data ) || canMoveDown( data ) || canMoveRight( data ) || canMoveUp( data ) ;
+}
