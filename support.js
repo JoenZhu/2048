@@ -59,6 +59,45 @@ function canMoveLeft( data ){
   return false ;
 }
 
+// check if num grid cell can move to up 
+// data : the game date
+function canMoveUp( data ){
+  var i, j; 
+  for( j = 0; j < 4; j++ )
+    for( i = 1; i < 4; i++ )
+      if( data[i][j] != 0 ) 
+        if( data[i - 1][j] == 0 || data[i - 1][j] == data[i][j])
+          return true ; 
+
+  return false ;
+}
+
+// check if num grid cell can move to right 
+// data : the game date
+function canMoveRight( data ){
+  var i, j; 
+  for( i = 0; i < 4; i++ )
+    for( j = 2; j >= 0; j-- )
+      if( data[i][j] != 0 )
+        if( data[i][j + 1] == 0 || data[i][j + 1] == data[i][j])
+          return true ;
+
+  return false ;
+}
+
+// check if num grid cell can move to down 
+// data : the game date
+function canMoveDown (data) {
+  var i, j ;
+  for( j = 0; j < 4; j++ )
+    for ( i = 2; i >= 0; i-- )
+      if( data[i][j] != 0 )
+        if( data[i + 1][j] == 0 || data[i + 1][j] == data[i][j])
+          return true ;
+
+  return false ;
+}
+
 // check if there is a block between two num grid cells 
 // row : data row number 
 // start : start col 
@@ -71,3 +110,18 @@ function isNoBlock(row, start, end, data){
       return false ;
   return true ;
 }
+
+// check if there is a block between two num grid cells 
+// col : data col number 
+// start : start row 
+// end : end row 
+// data : game number data
+function isNoBlockUp( col, start, end, data){
+  start += 1; 
+  for(; start < end; start++ )
+    if( data[start][col] != 0)
+      return false ; 
+
+  return true ;
+}
+

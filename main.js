@@ -78,10 +78,8 @@ function initRandomNum () {
         // init random num 
         num = random() > 0.5 ? 2 : 4 ;
         data[x][y] = num ;
-        console.log(x+', '+y+', '+num) ;
         showNums(x, y, num);
     }
-    
 }
 
 
@@ -89,19 +87,28 @@ function initRandomNum () {
 $(document).on('keydown', function(event){
     switch(event.keyCode){
         case 37 : // left arrow 
-            if(moveLeft()){  
+            if ( moveLeft() ) {  
                 initRandomNum() ;
                 isGameOver() ;
             } 
             break ; 
         case 38 : // up arrow
-            moveUp() ;
+            if ( moveUp() ){
+                initRandomNum();
+                isGameOver() ;
+            }
             break ;
         case 39 : // right arrow
-            moveRight() ;
+            if ( moveRight() ){
+                initRandomNum() ; 
+                isGameOver();
+            }
             break ;
         case 40 : // down arrow
-            moveDown() ;
+            if( moveDown() ){
+                initRandomNum() ; 
+                isGameOver() ;
+            }
             break ;
         default : // any other key  
             break ;
@@ -122,7 +129,7 @@ function moveLeft () {
             for(j = 1; j < 4; j++ ){
                 if(data[i][j] != 0){
                     for(k = 0; k < j; k++ ){
-                        if(data[i][k] == 0 || !isNoBlock(i, k, j, data)){
+                        if(data[i][k] == 0 && isNoBlock(i, k, j, data)){
 
                             // move num cell form (i,j) to (i,k)
                             showMove(i, j, i, k) 
@@ -132,7 +139,7 @@ function moveLeft () {
                             data[i][j] = 0 ;
 
                             continue ;
-                        }else if(data[i][k] == data[i][j] || !isNoBlock(i, k, j, data)){
+                        }else if(data[i][k] == data[i][j] && isNoBlock(i, k, j, data)){
 
                             // move
                             showMove(i, j, i, k) 
@@ -151,4 +158,106 @@ function moveLeft () {
     }
 
     return false ; 
+}
+
+// press up arrow key and execute this method
+// if can move up, then move up and return true  
+// if cannot move up , then break and return false 
+function moveUp () {
+    var i, j , k; 
+    if( canMoveUp( data ) ){
+        for(j = 0; j < 4; j++ ){
+            for(i = 1; i < 4; i++ ){
+                if( data[i][j] != 0){
+                    for(k = 0; k < i; k ++){
+                        if(data[k][j] == 0 && isNoBlockUp(j, k, i, data)){
+                            showMove(i, j, k, j) ; 
+                            data[k][j] = data[i][j] ; 
+                            data[i][j] = 0 ;
+
+                            continue ;
+                        } else if (data[k][j] == data[i][j] && isNoBlockUp(j, k, i, data)){
+                            showMove(i, j, k, j) ;
+                            data[k][j] += data[i][j]
+                            data[i][j] = 0 ;
+
+                            continue ; 
+                        }
+                    }
+                }
+            }
+        }
+
+        setTimeout(updateDataView, 200) ;
+        return true ;
+    }
+
+    return false ;
+}
+
+// press right arrow key and execute this method
+// if can move right, then move right and return true  
+// if cannot move right , then break and return false 
+function moveRight() {
+    var i, j, k ; 
+    if( canMoveRight( data )){
+        for( i = 0; i < 4; i++ ){
+            for( j = 2; j >= 0; j-- ){
+                if( data[i][j] != 0 ){
+                    for( k = 3; k >= j; k-- ){
+                        if( data[i][k] == 0 && isNoBlock(i, j, k, data)){
+                            showMove(i, j, i, k) ;
+                            data[i][k] = data[i][j] ;
+                            data[i][j] = 0 ; 
+
+                            continue ; 
+                        } else if ( data[i][k] == data[i][j] && isNoBlock(i, j, k, data)){
+                            showMove(i, j, i, k) ;
+                            data[i][k] += data[i][j] ;
+                            data[i][j] = 0 ; 
+
+                            continue ; 
+                        }
+                    }
+                }
+            }
+        }
+        setTimeout(updateDataView, 200);
+        return true ;
+    }
+    return false ;
+}
+
+// press down arrow key and execute this method
+// if can move down, then move down and return true  
+// if cannot move down , then break and return false 
+function moveDown () {
+    var i, j, k; 
+    if( canMoveDown( data )){
+        for( j = 0; j < 4; j++ ){
+            for( i = 2; i >= 0; i-- ){
+                if( data[i][j] != 0 ){
+                    for( k = 3; k >= i; k-- ){
+                        if( data[k][j] == 0 && isNoBlockUp(j, i, k, data)){
+                            showMove(i, j, k, j);
+                            data[k][j] = data[i][j] ;
+                            data[i][j] = 0 ;
+
+                            continue ;
+                        } else if( data[k][j] == data[i][j] && isNoBlockUp(j, i, k, data)){
+                            showMove(i, j, k, j);
+                            data[k][j] += data[i][j] ;
+                            data[i][j] = 0 ;
+
+                            continue ;
+                        }
+                    }
+                }
+            }
+        }
+        setTimeout(updateDataView, 200) ;
+        return true ;
+    }
+
+    return false ;
 }
