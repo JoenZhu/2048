@@ -15,3 +15,15 @@ function showMove(fromX, fromY, toX, toY){
 		left: setLeft(toX, toY)
 	}, 200) ;
 }
+
+function showGameOver (obj) {
+	obj.animate({
+		height:500
+	}, 200) ;
+}
+
+function hideGameOver (obj) {
+	obj.animate({
+		height:0
+	}, 200);
+}

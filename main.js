@@ -3,17 +3,22 @@ var data = [] , // game data , this will be init as a [][] later
     isAdded = [],
 
     $mainContent ,
-    $scoreSp ; // using jQuery choose game main body
+    $scoreSp ,
+    $gameOver ; // using jQuery choose game main body
 
 $(document).ready(function(){
     $mainContent = $('#mainContent') ;
     $scoreSp = $('#scoreSp');
+    $gameOver = $('#gameOver') ;
     newGame() ;
 });
 
 function newGame(){
     // init grids position
     initGrid() ;
+
+    // reset game over div 
+    resetGameOver();
 
     // init random num and grid
     initRandomNum() ;
@@ -95,6 +100,13 @@ function initRandomNum () {
     }
 }
 
+// reset game over
+function resetGameOver(){
+    if($gameOver.height() > 0){
+        $gameOver[0].innerHTML = ''; 
+        hideGameOver($gameOver) ;
+    }
+}
 
 // add keydown event listener to document 
 $(document).on('keydown', function(event){
@@ -136,7 +148,9 @@ function isGameOver(){
 
 // game over
 function gameOver(){
-    alert('Game over') ;
+    console.log('---- game over ----');
+    $gameOver.html('<h1>Game Over</h1>');
+    showGameOver($gameOver) ;
 }
 
 // press left arrow key and execute this method

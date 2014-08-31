@@ -60,3 +60,18 @@ header a:hover{
   text-align: center; 
   line-height: 100px; 
 }
+
+.game-over{
+  width: 500px;
+  height: 0;
+  position: absolute;
+  border-radius: 10px;
+  left: 0;
+  top: 0;
+  background-color: red; 
+  opacity: 0.5 ;
+  z-index: 999;
+  text-align: center;
+  color: green;
+}
+
