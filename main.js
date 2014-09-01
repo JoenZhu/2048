@@ -4,7 +4,9 @@ var data = [] , // game data , this will be init as a [][] later
 
     $mainContent ,
     $scoreSp ,
-    $gameOver ; // using jQuery choose game main body
+    $gameOver , // using jQuery choose game main body 
+
+    tStartX, tStartY, tEndX, tEndY ; // touch event start (x,y) and end (x, y)
 
 $(document).ready(function(){
     $mainContent = $('#mainContent') ;
@@ -133,24 +135,28 @@ function resetGameOver(){
 $(document).on('keydown', function(event){
     switch(event.keyCode){
         case 37 : // left arrow 
+            event.preventDefault() ;
             if ( moveLeft() ) {  
                 setTimeout(initRandomNum, 210) ;
                 isGameOver() ;
             } 
             break ; 
         case 38 : // up arrow
+            event.preventDefault() ;
             if ( moveUp() ){
                 initRandomNum();
                 isGameOver() ;
             }
             break ;
         case 39 : // right arrow
+            event.preventDefault() ;
             if ( moveRight() ){
                 initRandomNum() ; 
                 isGameOver();
             }
             break ;
         case 40 : // down arrow
+            event.preventDefault() ;
             if( moveDown() ){
                 initRandomNum() ; 
                 isGameOver() ;
@@ -160,6 +166,51 @@ $(document).on('keydown', function(event){
             break ;
     }
 });
+
+// touch start event 
+document.addEventListener('touchstart', function(event){
+    tStartX = event.touches[0].pageX ;
+    tStartY = event.touches[0].pageY ;
+}, false) ;
+
+document.addEventListener('touchend', function(event){
+    tEndX = event.changedTouches[0].pageX ;
+    tEndY = event.changedTouches[0].pageY ;
+
+    var x = tEndX - tStartX,
+        y = tEndY - tStartY ;
+
+    if( Math.abs(x) < 0.03 * documentWidth && Math.abs(y) < 0.03 * documentWidth)
+       return ;
+
+    if( Math.abs(x) >= Math.abs(y)){
+        // x direct
+        if( x > 0 ){
+            if ( moveRight() ){
+                initRandomNum() ; 
+                isGameOver();
+            }
+        } else {
+            if ( moveLeft() ) {  
+                setTimeout(initRandomNum, 210) ;
+                isGameOver() ;
+            }
+        }
+    } else {
+        // y direct
+        if(y > 0) {
+            if( moveDown() ){
+                initRandomNum() ; 
+                isGameOver() ;
+            }
+        } else {
+            if ( moveUp() ){
+                initRandomNum();
+                isGameOver() ;
+            }
+        }
+    }
+}, false) ;
 
 // check if game is over 
 function isGameOver(){
@@ -171,7 +222,7 @@ function isGameOver(){
 function gameOver(){
     console.log('---- game over ----');
     $gameOver.html('<h1>Game Over</h1>');
-    showGameOver($gameOver) ;
+    showGameOver($gameOver, mainContentWidth) ;
 }
 
 // press left arrow key and execute this method

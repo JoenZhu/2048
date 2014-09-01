@@ -55,8 +55,6 @@ header a:hover{
 }
 
 .game-over{
-  width: 500px;
-  height: 0;
   position: absolute;
   border-radius: 10px;
   left: 0;

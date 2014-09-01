@@ -16,14 +16,16 @@ function showMove(fromX, fromY, toX, toY){
 	}, 200) ;
 }
 
-function showGameOver (obj) {
+function showGameOver (obj, size) {
 	obj.animate({
-		height:500
+		height:size, 
+		width: size
 	}, 200) ;
 }
 
 function hideGameOver (obj) {
 	obj.animate({
-		height:0
+		height:0 ,
+		width:0
 	}, 200);
 }
