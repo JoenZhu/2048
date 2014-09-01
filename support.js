@@ -1,11 +1,17 @@
+// support mobile device
+var documentWidth = window.screen.availWidth ,
+    mainContentWidth = 0.92 * documentWidth ,
+    cellWidth = 0.18 * documentWidth ,
+    cellSpace = 0.04 * documentWidth ;
+
 // set the top position of grid cell or num grid cell 
 function setTop(i, j){
-  return 20 + i * 120 ;
+  return cellSpace + i * (cellWidth + cellSpace) ;
 }
 
 // set the left position of grid cell or num grid cell
 function setLeft(i, j){
-  return 20 + j * 120 ;
+  return cellSpace + j * (cellWidth + cellSpace) ;
 }
 
 // set the background color base on data value 
@@ -29,12 +35,12 @@ function setBgColor(num){
 }
 
 // set number cell fontsize
-function setFontSize( num ){
+function setFontSize( num, size ){
   num += '' ;
   switch( num.length ){
-    case 3 : return '54px' ;
-    case 4 : return '40px' ;
-    case 5 : return '30px' ;
+    case 3 : return 0.54 * size + 'px' ;
+    case 4 : return 0.4 * size + 'px' ;
+    case 5 : return 0.3 * size + 'px' ;
   }
 }
 

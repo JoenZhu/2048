@@ -10,13 +10,13 @@ body{
 }
 
 header{
-  width:500px;
+  width:100%;
   margin: 0 auto;
   text-align: center;
 }
 
 header h3{
-  font-size: 45px;
+  font-size: 40px;
   margin: 10px auto ;
 }
 
@@ -43,22 +43,15 @@ header a:hover{
 }
 
 .grid-cell{
-  width: 100px ;
-  height: 100px ;
   border-radius: 10px; 
   background-color: #9fb1be;
   position: absolute;
 }
 
 .num-grid-cell{
-  width: 100px ;
-  height: 100px ;
-  border-radius: 10px; 
-  position: absolute;
-  background-color: transparent;  
+  position: absolute; 
   font-size: 60px; 
   text-align: center; 
-  line-height: 100px; 
 }
 
 .game-over{

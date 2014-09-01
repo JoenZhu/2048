@@ -10,8 +10,25 @@ $(document).ready(function(){
     $mainContent = $('#mainContent') ;
     $scoreSp = $('#scoreSp');
     $gameOver = $('#gameOver') ;
+
+    supportMobile() ;
     newGame() ;
 });
+
+function supportMobile () {
+    if(documentWidth > 500){
+        mainContentWidth = 500 ;
+        cellWidth = 100 ;
+        cellSpace = 20 ;
+    }
+
+    $mainContent.css('width', mainContentWidth ) ;
+    $mainContent.css('height', mainContentWidth ) ;
+    $mainContent.css('padding', cellSpace).css('border-radius', 0.02 * mainContentWidth) ;
+
+    $('.grid-cell').css('width', cellWidth).css('height', cellWidth)
+                   .css('border-radius', 0.02 * mainContentWidth);
+}
 
 function newGame(){
     // init grids position
@@ -26,7 +43,7 @@ function newGame(){
 }
 
 function initGrid(){
-    var i, j, $numGrid ;
+    var i, j;
 
     // init grid position 
     for (i = 0; i < 4; i++) {
@@ -52,12 +69,16 @@ function initGrid(){
 
 
 function updateDataView(){
-    var i, j ; 
+    var i, j , $numGrid; 
     $('.num-grid-cell').remove() ; 
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
             $numGrid = $('<div class="num-grid-cell" id="numGridCell'+i+''+j+'"></div>');
-            $numGrid.css('left', setLeft(i,j)+'px').css('top', setTop(i,j)+'px') ;
+            $numGrid.css('left', setLeft(i,j)).css('top', setTop(i,j)) ;
+            $numGrid.css('height', cellWidth).css('width', cellWidth);
+
+            $numGrid.css('line-height', cellWidth + 'px').css('fontSize', 0.6 * cellWidth+'px') ;
+            $numGrid.css('border-radius', 0.02 * mainContentWidth);
 
             if(data[i][j] == 0){
                 $numGrid.css('backgroundColor','transparent') ;
@@ -65,7 +86,7 @@ function updateDataView(){
                 $numGrid.css('backgroundColor', setBgColor(data[i][j])) ;
                 $numGrid.css('color', setNumColor(data[i][j])) ;
                 if( (data[i][j] + '').toString().length > 2){
-                    $numGrid.css('fontSize', setFontSize( data[i][j] )) ;
+                    $numGrid.css('fontSize', setFontSize( data[i][j], cellWidth )) ;
                 }
                 $numGrid.text(data[i][j]) ; 
             }
